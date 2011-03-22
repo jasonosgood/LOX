@@ -39,17 +39,17 @@ public class
 		List<Element> children = root.getAll( "child" );
 		System.out.println( children );
 		
-		List ugh = document.query( "//child" );
-		for( Object b :ugh )
-		{
-			System.out.print( b );
-		}
-		
-		ugh = document.query( "//child/@name" );
-		for( Object b :ugh )
-		{
-			System.out.print( b );
-		}
+//		List ugh = document.query( "//child" );
+//		for( Object b :ugh )
+//		{
+//			System.out.print( b );
+//		}
+//		
+//		ugh = document.query( "//child/@name" );
+//		for( Object b :ugh )
+//		{
+//			System.out.print( b );
+//		}
 		
 	}
 }
