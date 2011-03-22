@@ -115,14 +115,14 @@ extends
 		{
 			node.serialize( writer );
 		}
-//		writer.flush();
 		writer.close();
 	}
 
 	public List<Element> find( String expression )
 	{
-		Element fakeRoot = new Element( "fakeRoot" );
-		fakeRoot.add( getRoot() );
-		return fakeRoot.find( expression );
+		Element root = getRoot();
+		Element fake = new Element();
+		fake.add( root );
+		return fake.find( expression );
 	}
 }
