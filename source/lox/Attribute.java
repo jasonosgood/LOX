@@ -29,6 +29,8 @@ import java.io.StringWriter;
 public class 
 	Attribute
 {
+	protected Attribute() {}
+	
 	public Attribute( String name, Object value )
 	{
 		name( name );

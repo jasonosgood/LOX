@@ -39,6 +39,8 @@ extends
 implements
 	Iterable<Content>
 {
+	protected Element() {}
+	
 	public Element( String name ) 
 	{
 		name( name );
@@ -57,7 +59,7 @@ implements
 	}
 	
 	private LinkedList<Attribute> _attributes;
-	private static LinkedList<Attribute> NULL_ATTRIBUTES = new LinkedList<Attribute>();
+	protected static LinkedList<Attribute> NULL_ATTRIBUTES = new LinkedList<Attribute>();
 	
 	public List<Attribute> attributes()
 	{
@@ -99,64 +101,6 @@ implements
 		return size() > 0;
 	}
 	
-	public Element get( String name )
-	{
-		if( name == null )
-		{
-			throw new NullPointerException( "name" );
-		}
-		
-//		boolean spaced = name.indexOf( ':' ) > -1;
-		
-		Element result = null;
-		for( Content node : this )
-		{
-			if( node instanceof Element )
-			{
-				Element element = (Element) node;
-				String other = element.name();
-				if( name.equals( other ))
-				{
-					result = element;
-					break;
-				}
-				
-//				if( !spaced )
-//				{
-//					int oof = other.indexOf( ':' );
-//					if( name.equals( other.substring( oof + 1 )))
-//					{
-//						result = element;
-//						break;
-//					}
-//				}
-			}
-		}
-		return result;
-	}
-	
-	public List<Element> getAll( String name )
-	{
-		if( name == null )
-		{
-			throw new NullPointerException( "name" );
-		}
-		
-		ArrayList<Element> result = new ArrayList<Element>();
-		for( Content node : this )
-		{
-			if( node instanceof Element )
-			{
-				Element element = (Element) node;
-				if( name.equals( element.name() ))
-				{
-					result.add( element );
-				}
-			}
-		}
-		return result;
-	}
-
 	public void serialize( DocumentWriter writer )
 		throws IOException
 	{
@@ -193,20 +137,20 @@ implements
      * 
      */
 
-	public String toContent()
+	public String getText()
 	{
 		StringBuilder sb = new StringBuilder();
-		toContent( sb );
+		getText( sb );
 		return sb.toString();
 	}
 	
-	protected void toContent( StringBuilder sb )
+	protected void getText( StringBuilder sb )
 	{
 		for( Content child : this )
 		{
 			if( child instanceof Element )
 			{
-				((Element) child).toContent( sb );
+				((Element) child).getText( sb );
 			}
 			else if( child instanceof Text )
 			{
@@ -240,7 +184,7 @@ implements
 			
 		_children[_size++] = child;
 		
-		child.setParent( this );
+//		child.setParent( this );
 		
 		return true;
 	}
@@ -255,7 +199,7 @@ implements
 		int size = size();
 		for( int nth = 0; nth < size; nth++ )
 		{
-			_children[nth].setParent( null );
+//			_children[nth].setParent( null );
 			// We're told that nulling pointers helps the garbage collector
 			_children[nth] = null;
 		}
@@ -296,14 +240,6 @@ implements
 		};
 	}
 
-	public Element findFirst( String expression )
-	{
-		Element result = null;
-		List<Element> found = find( expression );
-		if( found.size() > 0 ) result = found.get( 0 );
-		return result;
-	}
-	
 	public List<Element> find( String expression )
 	{
 		if( expression == null )
@@ -360,4 +296,37 @@ implements
 		
 		return true;
 	}
+	
+	public Element findFirst( String expression )
+	{
+		Element result = NullElement.NULL_ELEMENT;
+		List<Element> found = find( expression );
+		if( found.size() > 0 )
+		{
+			result = found.get( 0 );
+		}
+		return result;
+	}
+	
+	public String findFirstString( String expression )
+	{
+		return findFirst( expression ).getText();
+	}
+	
+	public int findFirstInteger( String expression )
+		throws NumberFormatException
+	{
+		String text = findFirst( expression ).getText();
+		int result = Integer.parseInt( text );
+		return result;
+	}
+
+	public boolean findFirstBoolean( String expression )
+		throws NumberFormatException
+	{
+		String text = findFirst( expression ).getText();
+		boolean result = Boolean.parseBoolean( text );
+		return result;
+	}
+
 }

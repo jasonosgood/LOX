@@ -26,7 +26,9 @@ public class Expression
 		for( Element animal : animals )
 		{
 			Element habitat = animal.findFirst( "Habitat" );
-			System.out.println( "habitat: " + habitat );
+			Element lifestyle = animal.findFirst( "Lifestyle" );
+			System.out.println( "habitat: " + habitat.getText() );
+			System.out.println( "lifestyle: " + lifestyle.getText() );
 		}
 	}
 

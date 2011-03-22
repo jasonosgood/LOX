@@ -24,10 +24,10 @@ public class
 		
 		Element root = document.getRoot();
 		
-		Element item1 = root.get( "item" );
+		Element item1 = root.findFirst( "item" );
 		System.out.println( "item1: " + item1 );
 		
-		Element item2 = root.get( "sour:item" );
+		Element item2 = root.findFirst( "sour:item" );
 		System.out.println( "item2: " + item2 );
 		
 	}
