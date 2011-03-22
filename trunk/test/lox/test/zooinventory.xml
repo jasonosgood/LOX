@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inventory>
+	<Animal class="mammal">
+		<Name>Song Fang</Name>
+		<Species>Giant Panda</Species>
+		<Habitat>China</Habitat>
+		<Food>Bamboo</Food>
+		<Temperament>Friendly</Temperament>
+	</Animal>
+	<Animal class="mammal">
+		<Name>Cocoa</Name>
+		<Species>Gorilla</Species>
+		<Habitat>Central Africa</Habitat>
+		<FoodRecipe>
+			<Name>Gorilla Chow</Name>
+			<Ingredient>Fruit</Ingredient>
+			<Ingredient>Shoots</Ingredient>
+			<Ingredient>Leaves</Ingredient>
+		</FoodRecipe>
+		<Temperament>Know-it-all</Temperament>
+	</Animal>
+</Inventory>
