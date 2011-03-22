@@ -67,25 +67,6 @@ extends
 		return false;
 	}
 	
-	public Element get( String name )
-	{
-		if( name == null )
-		{
-			throw new NullPointerException( "name" );
-		}
-		return this;
-	}
-	
-	public List<Element> getAll( String name )
-	{
-		if( name == null )
-		{
-			throw new NullPointerException( "name" );
-		}
-		
-		return new ArrayList<Element>();
-	}
-
 	public void serialize( DocumentWriter writer )
 		throws IOException
 	{
@@ -96,19 +77,14 @@ extends
 		return null;
 	}
 	
-	public boolean add( Content child )
-	{
-		return false;
-	}
+	public void add( Content child ) {}
 
 	public int size()
 	{
 		return 0;
 	}
 
-	public void clear()
-	{
-	}
+	public void clear() {}
 
 	public Content get( int index )
 	{
@@ -139,6 +115,16 @@ extends
 		};
 	}
 
+	public List<Element> find( String expression )
+	{
+		if( expression == null )
+		{
+			throw new NullPointerException( "expression" );
+		}
+		
+		return new ArrayList<Element>();
+	}
+
 	public Element findFirst( String expression )
 	{
 		if( expression == null )
@@ -149,13 +135,24 @@ extends
 		return this;
 	}
 	
-	public List<Element> find( String expression )
+	public int findFirstInteger( String expression )
 	{
 		if( expression == null )
 		{
 			throw new NullPointerException( "expression" );
 		}
 		
-		return new ArrayList<Element>();
+		return 0;
 	}
+	
+	public boolean findFirstBoolean( String expression )
+	{
+		if( expression == null )
+		{
+			throw new NullPointerException( "expression" );
+		}
+		
+		return false;
+	}
+	
 }

@@ -163,7 +163,7 @@ implements
 	private int _size = 0;
 	private int _increment = 5;
 
-	public boolean add( Content child )
+	public void add( Content child )
 	{
 		if( child == null )
 		{
@@ -185,10 +185,8 @@ implements
 		_children[_size++] = child;
 		
 //		child.setParent( this );
-		
-		return true;
 	}
-
+	
 	public int size()
 	{
 		return _size;
@@ -253,50 +251,37 @@ implements
 			query.add( atom );
 		}
 		
-		Stack<Element> path = new Stack<Element>();
 		ArrayList<Element> result = new ArrayList<Element>();
-		crawl( this, path, query, result );
+		find( this, query, 0, result );
 		return result;
 	}
 
-	public void crawl( Element parent, Stack<Element> path, ArrayList<String> query, ArrayList<Element> result )
+	// TODO: Add quick exit for first result
+	// TODO: Add support for wildcards, eg "*/child" and "parent/*/grandchild"
+	private void find( Element parent, ArrayList<String> query, int nth, ArrayList<Element> result )
 	{
-		for( Content content : parent )
+		if( nth < query.size() )
 		{
-			if( content instanceof Element )
+			String spot = query.get( nth );
+			for( Content content : parent )
 			{
-				Element element = (Element) content;
-				path.push( element  );
-				if( match( path, query ))
+				if( content instanceof Element )
 				{
-					result.add( (Element) content );
+					Element child = (Element) content;
+					String name = child.name();
+					if( name.equalsIgnoreCase( spot ))
+					{
+						find( (Element) content, query, nth + 1, result );
+					}
 				}
-				else if( content instanceof Element )
-				{
-					crawl( (Element) content, path, query, result );
-				}
-				path.pop();
 			}
-			
+		}
+		else
+		{
+			result.add( parent );
 		}
 	}
 
-	private boolean match( Stack<Element> pathList, ArrayList<String> queryList ) 
-	{
-		if( pathList.size() != queryList.size() ) return false;
-		
-		Iterator<Element> path = pathList.iterator();
-		Iterator<String> query = queryList.iterator();
-		while( path.hasNext() && query.hasNext() )
-		{
-			String name = path.next().name();
-			String temp = query.next();
-			if( !name.equalsIgnoreCase( temp )) return false;
-		}
-		
-		return true;
-	}
-	
 	public Element findFirst( String expression )
 	{
 		Element result = NullElement.NULL_ELEMENT;
@@ -328,5 +313,30 @@ implements
 		boolean result = Boolean.parseBoolean( text );
 		return result;
 	}
+	
+	public double findFirstDouble( String expression )
+		throws NumberFormatException
+	{
+		String text = findFirst( expression ).getText();
+		double result = Double.parseDouble( text );
+		return result;
+	}
+
+	public float findFirstFloat( String expression )
+		throws NumberFormatException
+	{
+		String text = findFirst( expression ).getText();
+		float result = Float.parseFloat( text );
+		return result;
+	}
+
+//	public Date findFirstDate( String expression )
+//		throws NumberFormatException
+//	{
+//		String text = findFirst( expression ).getText();
+//		boolean result = Boolean.parseBoolean( text );
+//		return result;
+//	}
+
 
 }
