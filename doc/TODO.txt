@@ -1,0 +1,48 @@
+TODO List
+
+element name verifier
+	no punctuation, no whitespace
+attribute name verifier
+	no punctuation, no whitespace
+
+
+LOXBuilder
+	documents can only have one root
+	
+Documents cannot contain
+	
+Add copyright notice. Which to use?
+Smart line wrapper for pretty printing
+	
+verify doctype's name and root element's name are the same
+add encoding options to XMLWriter
+
+Documentation
+introduction
+comparison
+ vs DOM
+ vs JDOM
+ vs XOM
+examples
+	manual
+	using LOXBuilder
+	overriding LOXBuilder
+	static initializer w/ LOXBuilder
+	using XMLBuilder
+	GetElementExample
+	
+	using formatters
+	
+colophon
+
+proper whitespace between header, doctype, root
+XMLBuilder gets leaf and marker
+
+
+differences
+no toXML() method, just toString() -- great for debugging
+no parent reference, no getParent() clone() copy() methods, reuse instances throughout tree
+
+LazyArrayList (lazily initialized) 
+
+FIX: Element.toString has \n prefix 
