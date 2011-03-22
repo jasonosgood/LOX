@@ -101,7 +101,7 @@ extends
 	 * @param writer
 	 * @throws IOException
 	 */
-	public void serialize( XMLWriter writer )
+	public void serialize( DocumentWriter writer )
 		throws IOException
 	{
 		writer.document();
@@ -115,11 +115,14 @@ extends
 		{
 			node.serialize( writer );
 		}
-		writer.flush();
+//		writer.flush();
+		writer.close();
 	}
 
-	public List<Content> query( String expression )
+	public List<Element> find( String expression )
 	{
-		return null;
+		Element fakeRoot = new Element( "fakeRoot" );
+		fakeRoot.add( getRoot() );
+		return fakeRoot.find( expression );
 	}
 }

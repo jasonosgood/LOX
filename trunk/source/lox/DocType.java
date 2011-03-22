@@ -131,7 +131,7 @@ public class
 		return sw.toString(); 
 	}
 
-	public void serialize( XMLWriter writer )
+	public void serialize( DocumentWriter writer )
 		throws IOException
 	{
 		writer.doctype( rootName(), systemID(), publicID() );
