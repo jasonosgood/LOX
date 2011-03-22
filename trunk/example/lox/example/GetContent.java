@@ -24,7 +24,7 @@ public class GetContent
 		
 		System.out.println( builder );
 		Element root = builder.getDocument().getRoot();
-		System.out.println( "content: " + root.toContent() );
+		System.out.println( "content: " + root.getText() );
 	}
 
 }

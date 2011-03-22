@@ -34,9 +34,9 @@ public class
 		Document document = example.getDocument();
 		System.out.print( document );
 		Element root = document.getRoot();
-		Element child = root.get( "child" );
+		Element child = root.findFirst( "child" );
 		System.out.println( child );
-		List<Element> children = root.getAll( "child" );
+		List<Element> children = root.find( "child" );
 		System.out.println( children );
 		
 //		List ugh = document.query( "//child" );

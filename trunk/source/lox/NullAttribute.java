@@ -26,43 +26,32 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 
-/**
- * Interface Content is subclassed by all of LOX's XML content classes.
- * 
- * @author Jason Aaron Osgood
- **/
-
-public abstract class 
-	Content
+public class 
+	NullAttribute
+extends
+	Attribute
 {
-//	private Element _parent = null;
-//	
-//	void setParent( Element parent )
-//	{
-//		_parent = parent;
-//	}
-//	
-//	public Element getParent()
-//	{
-//		return _parent; 
-//	}
-//	
-	public final String toString()
+	public NullAttribute()
 	{
-		StringWriter sw = new StringWriter();
-		XMLWriter xw = new XMLWriter( sw );
-		try
-		{
-			serialize( xw );
-			xw.close();
-		}
-		catch( IOException e )
-		{
-			e.printStackTrace( new PrintWriter( sw ));
-		}
-		return sw.toString(); 
+	}
+	
+	public String name()
+	{
+		return null;
+	}
+	
+	public Object value()
+	{
+		return null;
 	}
 
-	public abstract void serialize( DocumentWriter writer ) 
-		throws IOException;
+	public String toString()
+	{
+		return null; 
+	}
+	
+	public void serialize( XMLWriter writer )
+		throws IOException
+	{
+	}
 }
