@@ -57,7 +57,7 @@ extends
 		return _value;
 	}
 
-	public void serialize( XMLWriter writer )
+	public void serialize( DocumentWriter writer )
 		throws IOException
 	{
 		writer.cdata( value() );

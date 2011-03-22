@@ -41,8 +41,10 @@ public class
 	XMLWriter 
 extends 
 	Writer
+implements
+	DocumentWriter
 {
-	private Writer _writer;
+	protected Writer _writer;
 	
 	public XMLWriter( Writer writer )
 	{
@@ -276,10 +278,6 @@ extends
 	public void text( Object text )
 		throws IOException
 	{
-		if( text == null )
-		{
-			throw new NullPointerException( "text" );
-		}
 		_indent++;
 		indent();
 		String temp = format( text );
@@ -431,7 +429,7 @@ extends
 	{
 		if( value == null )
 		{
-			return "";
+			return "null";
 		}
 		
 		if( _formats != null )

@@ -157,7 +157,7 @@ implements
 		return result;
 	}
 
-	public void serialize( XMLWriter writer )
+	public void serialize( DocumentWriter writer )
 		throws IOException
 	{
 		String name = name();
@@ -296,5 +296,68 @@ implements
 		};
 	}
 
+	public Element findFirst( String expression )
+	{
+		Element result = null;
+		List<Element> found = find( expression );
+		if( found.size() > 0 ) result = found.get( 0 );
+		return result;
+	}
+	
+	public List<Element> find( String expression )
+	{
+		if( expression == null )
+		{
+			throw new NullPointerException( "expression" );
+		}
+		
+		ArrayList<String> query = new ArrayList<String>();
+		for( String atom : expression.split( "/" ))
+		{
+			query.add( atom );
+		}
+		
+		Stack<Element> path = new Stack<Element>();
+		ArrayList<Element> result = new ArrayList<Element>();
+		crawl( this, path, query, result );
+		return result;
+	}
 
+	public void crawl( Element parent, Stack<Element> path, ArrayList<String> query, ArrayList<Element> result )
+	{
+		for( Content content : parent )
+		{
+			if( content instanceof Element )
+			{
+				Element element = (Element) content;
+				path.push( element  );
+				if( match( path, query ))
+				{
+					result.add( (Element) content );
+				}
+				else if( content instanceof Element )
+				{
+					crawl( (Element) content, path, query, result );
+				}
+				path.pop();
+			}
+			
+		}
+	}
+
+	private boolean match( Stack<Element> pathList, ArrayList<String> queryList ) 
+	{
+		if( pathList.size() != queryList.size() ) return false;
+		
+		Iterator<Element> path = pathList.iterator();
+		Iterator<String> query = queryList.iterator();
+		while( path.hasNext() && query.hasNext() )
+		{
+			String name = path.next().name();
+			String temp = query.next();
+			if( !name.equalsIgnoreCase( temp )) return false;
+		}
+		
+		return true;
+	}
 }

@@ -18,8 +18,7 @@
    jason@jasonosgood.com
    http://code.google.com/p/lox/
    
-*/
-package lox;
+*/package lox;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -29,7 +28,8 @@ import java.io.Writer;
 
 /**
  * XMLBuilder "builds" an XML document, directly. The output is written to a
- * XMLWriter. There is no in memory representation of the XML document.
+ * XMLWriter. There is no in memory representation of the XML document; use 
+ * LOXBuilder construct an object graph.
  * 
  * XMLBuilder uses a stack data structure to track internal state.
  * 
@@ -50,7 +50,11 @@ public class
 	private boolean _doctype = false;
 	private boolean _children = false;
 	private boolean _tailed = false;
-	
+
+	public XMLBuilder()
+	{
+		this( new PrintWriter( System.out ));
+	}
 
 	public XMLBuilder( OutputStream out )
 	{
@@ -59,10 +63,15 @@ public class
 	
 	public XMLBuilder( Writer writer )
 	{
+		setWriter( writer );
+	}
+	
+	public void setWriter( Writer writer )
+	{
 		_writer = new XMLWriter( writer );
 		_stack = new Stack<String>();
 	}
-
+	
 	public void setChecker( Checker checker )
 	{
 		if( checker == null )
@@ -164,7 +173,7 @@ public class
 		_tailed = false;
 	}
 	
-	public void attribute( String name, String value )
+	public void attribute( String name, Object value )
 		throws IOException
 	{
 		if( name == null )
@@ -241,6 +250,12 @@ public class
 		
 		bracket();
 		_writer.cdata( value );
+	}
+	
+	public void whitespace( String value )
+		throws IOException
+	{
+		_writer.whitespace( value );
 	}
 	
 	private void bracket()

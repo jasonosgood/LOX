@@ -63,6 +63,6 @@ public abstract class
 		return sw.toString(); 
 	}
 
-	public abstract void serialize( XMLWriter writer ) 
+	public abstract void serialize( DocumentWriter writer ) 
 		throws IOException;
 }
