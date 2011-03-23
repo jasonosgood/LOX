@@ -240,6 +240,11 @@ implements
 
 	public List<Element> find( String expression )
 	{
+		return find( expression, false );
+	}
+	
+	protected List<Element> find( String expression, boolean first )
+	{
 		if( expression == null )
 		{
 			throw new NullPointerException( "expression" );
@@ -252,28 +257,36 @@ implements
 		}
 		
 		ArrayList<Element> result = new ArrayList<Element>();
-		find( this, query, 0, result );
+		find( first, this, query, 0, false, result );
 		return result;
 	}
 
-	// TODO: Add quick exit for first result
-	// TODO: Add support for wildcards, eg "*/child" and "parent/*/grandchild"
-	private void find( Element parent, ArrayList<String> query, int nth, ArrayList<Element> result )
+	private void find( boolean first, Element parent, ArrayList<String> query, int nth, boolean seeking, ArrayList<Element> result )
 	{
 		if( nth < query.size() )
 		{
 			String spot = query.get( nth );
+			boolean wildcard = "*".equals( spot );
 			for( Content content : parent )
 			{
 				if( content instanceof Element )
 				{
 					Element child = (Element) content;
-					String name = child.name();
-					if( name.equalsIgnoreCase( spot ))
+					if( wildcard || child.name().equalsIgnoreCase( spot ))
 					{
-						find( (Element) content, query, nth + 1, result );
+						find( first, child, query, nth + 1, false, result );
+					}
+					else if( "**".equals( spot ))
+					{
+						find( first, child, query, nth + 1, true, result );
+					}
+					else if( seeking )
+					{
+						find( first, child, query, nth, true, result );
 					}
 				}
+				
+				if( first && result.size() > 0 ) break;
 			}
 		}
 		else
@@ -285,7 +298,7 @@ implements
 	public Element findFirst( String expression )
 	{
 		Element result = NullElement.NULL_ELEMENT;
-		List<Element> found = find( expression );
+		List<Element> found = find( expression, true );
 		if( found.size() > 0 )
 		{
 			result = found.get( 0 );
