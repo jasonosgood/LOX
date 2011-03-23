@@ -19,17 +19,36 @@ public class Expression
 	{
 		InputStream in = new FileInputStream( "./test/lox/test/zooinventory.xml" );
 		Document doc = LOXHandler.load( in );
-		System.out.println( doc );
 		
 		String expression = "Inventory/Animal";
 		List<Element> animals = doc.find( expression );
+		System.out.println( "animals found: " + animals.size() );
 		for( Element animal : animals )
 		{
-			Element habitat = animal.findFirst( "Habitat" );
-			Element lifestyle = animal.findFirst( "Lifestyle" );
-			System.out.println( "habitat: " + habitat.getText() );
-			System.out.println( "lifestyle: " + lifestyle.getText() );
+			String habitat = animal.findFirstString( "Habitat" );
+			String lifestyle = animal.findFirstString( "Lifestyle" );
+			System.out.println( "habitat: " + habitat );
+			System.out.println( "lifestyle: " + lifestyle );
 		}
+		
+		List<Element> animals2 = doc.find( "*/Animal" );
+		System.out.println( "animals2 found: " + animals2.size() );
+		
+		Element nameX = doc.getRoot().findFirst( "*/Name" );
+		System.out.println( "nameX found: " + nameX.getText() );
+		
+		List<Element> names = doc.find( "Inventory/*/Name" );
+		System.out.println( "names found: " + names.size() );
+		
+		List<Element> foodRecipe = doc.find( "**/FoodRecipe" );
+		System.out.println( "food recipes found: " + foodRecipe.size() );
+		
+		List<Element> fail = doc.find( "FruitCake" );
+		System.out.println( "fail found: " + fail.size() );
+		
+		List<Element> fruitCake = doc.find( "**/FruitCake" );
+		System.out.println( "fruitCake found: " + fruitCake.size() );
+		
 	}
 
 }

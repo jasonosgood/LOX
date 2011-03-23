@@ -47,7 +47,7 @@ public abstract class
 //		return _parent; 
 //	}
 //	
-	public final String toString()
+	public String toString()
 	{
 		StringWriter sw = new StringWriter();
 		XMLWriter xw = new XMLWriter( sw );

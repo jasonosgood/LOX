@@ -52,6 +52,11 @@ extends
 		return _value;
 	}
 
+	public String toString()
+	{
+		return value();
+	}
+	
 	public void serialize( DocumentWriter writer ) 
 		throws IOException
 	{
