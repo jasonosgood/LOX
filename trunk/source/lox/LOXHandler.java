@@ -105,104 +105,55 @@ extends
 		_builder.pop();
 	}
 
-	// TODO: Extract embedded whitespace, not just the front and ends
 	// TODO: Decode entities (e.g. &amp; &lt;) back to characters
-//	public void characters( char[] ch, int start, int length ) 
-//		throws SAXException
-//	{
-//		int front;
-//		front:
-//		for( front = start; front < length; front++ )
-//		{
-//			char c = ch[front];
-//			switch( c )
-//			{
-//				case ' ':
-//				case '\t':
-//				case '\r':
-//				case '\n':
-//					break;
-//				default:
-//					break front;
-//			}
-//		}
-//		int size = front - start;
-//		ignorableWhitespace( ch, start, size );
-//		
-//		int back;
-//		back:
-//		for( back = length; back > 0; back-- )
-//		{
-//			char c = ch[back - 1];
-//			switch( c )
-//			{
-//				case ' ':
-//				case '\t':
-//				case '\r':
-//				case '\n':
-//					break;
-//				default:
-//					break back;
-//			}
-//		}
-//		
-//		ignorableWhitespace( ch, back, length - back );
-//		
-//		if( back - front > 0 )
-//		{
-//			String trim = new String( ch, front, back - front );
-//			System.out.println( "characters (trim): '" + trim + "'" );
-//			_builder.text( trim );
-//		}
-//	}
+	// TODO: heuristic so that "<tag>  </tag>" created element & text nodes.
     public void characters( char[] ch, int start, int length ) 
 	    throws SAXException
 	{
-	    int front;
-	    front:
-	    for( front = start; front - start < length; front++ )
+    	int end = start + length;
+	    int front = start;
+	    int back = end;
+	    moveFront:
+	    while( front < end )
 	    {
-	            switch( ch[front] )
-	            {
-	                    case ' ':
-	                    case '\t':
-	                    case '\r':
-	                    case '\n':
-	                            break;
-	                    default:
-	                            break front;
-	            }
+            switch( ch[front] )
+            {
+                case ' ':
+                case '\t':
+                case '\r':
+                case '\n':
+                	front++;
+                	break;
+                default:
+                	break moveFront;
+            }
 	    }
-	    int size = front - start;
-	    ignorableWhitespace( ch, start, size );
-	    start += size;
-	    length -= size;
+
+	    ignorableWhitespace( ch, start, front - start );
 	    
-	    int back;
-	    back:
-	    for( back = 0; back < length; back++ )
+	    moveBack:
+	    while( back > front )
 	    {
-	            switch( ch[length - back] )
-	            {
-	                    case ' ':
-	                    case '\t':
-	                    case '\r':
-	                    case '\n':
-	                            break;
-	                    default:
-	                            break back;
-	            }
+            switch( ch[back - 1] )
+            {
+				case ' ':
+				case '\t':
+				case '\r':
+				case '\n':
+					back--; 
+					break;
+				default:
+					break moveBack;
+            }
 	    }
 	    
-	    ignorableWhitespace( ch, start + length - back, back );
-	    length -= back;
-	    
-	    if( length > 0 )
+	    if( back > front )
 	    {
-	            String trim = new String( ch, start, length );
-	//          System.out.println( "characters (trim): '" + trim + "'" );
-	            _builder.text( trim );
+            String trim = new String( ch, front, back - front );
+            _builder.text( trim );
 	    }
+	    
+	    ignorableWhitespace( ch, back, end - back );
 	}
 	public void startPrefixMapping( String prefix, String uri ) 
 		throws SAXException
@@ -216,9 +167,22 @@ extends
 		System.out.printf( "startPrefixMapping prefix: %s\n", prefix );
 	}
 
+	private boolean _ignoreWhitespace = true;
+	
+	public void setIgnoreWhitespace( boolean ignore )
+	{
+		_ignoreWhitespace = ignore;
+	}
+	
+	public boolean getIgnoreWhitespace()
+	{
+		return _ignoreWhitespace;
+	}
+	
 	public void ignorableWhitespace( char[] ch, int start, int length ) 
 		throws SAXException
 	{
+		if( _ignoreWhitespace ) return;
 		if( length > 0 )
 		{
 			String temp = new String( ch, start, length );
