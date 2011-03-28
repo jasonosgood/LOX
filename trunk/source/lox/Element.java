@@ -243,6 +243,7 @@ implements
 		return find( expression, false );
 	}
 	
+	// TODO: validate expression
 	protected List<Element> find( String expression, boolean first )
 	{
 		if( expression == null )
@@ -263,35 +264,34 @@ implements
 
 	private void find( boolean first, Element parent, ArrayList<String> query, int nth, boolean seeking, ArrayList<Element> result )
 	{
-		if( nth < query.size() )
+		String spot = query.get( nth );
+		for( Content content : parent )
 		{
-			String spot = query.get( nth );
-			boolean wildcard = "*".equals( spot );
-			for( Content content : parent )
+			if( content instanceof Element )
 			{
-				if( content instanceof Element )
+				Element child = (Element) content;
+				if( "*".equals( spot ) || child.name().equalsIgnoreCase( spot ))
 				{
-					Element child = (Element) content;
-					if( wildcard || child.name().equalsIgnoreCase( spot ))
+					if( nth + 1 < query.size() )
 					{
 						find( first, child, query, nth + 1, false, result );
 					}
-					else if( "**".equals( spot ))
+					else
 					{
-						find( first, child, query, nth + 1, true, result );
-					}
-					else if( seeking )
-					{
-						find( first, child, query, nth, true, result );
+						result.add( child );
 					}
 				}
-				
-				if( first && result.size() > 0 ) break;
+				else if( "**".equals( spot ))
+				{
+					find( first, child, query, nth + 1, true, result );
+				}
+				else if( seeking )
+				{
+					find( first, child, query, nth, true, result );
+				}
 			}
-		}
-		else
-		{
-			result.add( parent );
+			
+			if( first && result.size() > 0 ) break;
 		}
 	}
 
@@ -312,10 +312,32 @@ implements
 	}
 	
 	public int findFirstInteger( String expression )
-		throws NumberFormatException
+		throws LOXException
 	{
 		String text = findFirst( expression ).getText();
-		int result = Integer.parseInt( text );
+		try
+		{
+			int result = Integer.parseInt( text );
+			return result;
+		}
+		catch( NumberFormatException e )
+		{
+			String msg = "expression: " + expression + ", value: " + text; 
+			throw new LOXException( e, msg );
+		}
+	}
+	
+	public int findFirstInteger( String expression, int defaultValue )
+	{
+		int result = defaultValue;
+		try
+		{
+			result = findFirstInteger( expression );
+		}
+		catch( LOXException e ) 
+		{
+			// Eat it
+		}
 		return result;
 	}
 
