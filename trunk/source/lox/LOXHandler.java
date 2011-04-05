@@ -1,5 +1,7 @@
 package lox;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -38,6 +40,12 @@ extends
 		return _builder.getDocument();
 	}
 
+	public static Document load( File file )
+		throws ParserConfigurationException, SAXException, IOException
+	{
+		FileInputStream in = new FileInputStream( file );
+		return load( in );
+	}
 	
 	public static Document load( InputStream in ) 
 		throws ParserConfigurationException, SAXException, IOException
@@ -206,7 +214,7 @@ extends
 	Locator _locator = null;
 	public void setDocumentLocator( Locator locator )
 	{
-		System.out.println( "setDocumentLocator" + locator );
+//		System.out.println( "setDocumentLocator" + locator );
 //		_locator = locator;
 //		throw new NullPointerException( "setDocumentLocator" );
 	}
