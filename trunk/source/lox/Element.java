@@ -23,7 +23,10 @@
 package lox;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -205,14 +208,14 @@ implements
 		_size = 0;
 	}
 
-	public Content get( int index )
-	{
-		if( index < 0 || index >= _size )
-		{
-			throw new  IndexOutOfBoundsException( "index: " + index + ", size: " + _size );
-		}
-		return _children[index];
-	}
+//	public Content get( int index )
+//	{
+//		if( index < 0 || index >= _size )
+//		{
+//			throw new  IndexOutOfBoundsException( "index: " + index + ", size: " + _size );
+//		}
+//		return _children[index];
+//	}
 	
 	public boolean isEmpty()
 	{
@@ -365,13 +368,35 @@ implements
 		return result;
 	}
 
-//	public Date findFirstDate( String expression )
-//		throws NumberFormatException
-//	{
-//		String text = findFirst( expression ).getText();
-//		boolean result = Boolean.parseBoolean( text );
-//		return result;
-//	}
+	// TODO: I don't think this is complete, eg has no timezone or offset
+	public final static String XML_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
+	
+	public Date findFirstDate( String expression )
+		throws ParseException
+	{
+		String text = findFirst( expression ).getText().trim();
+		String pattern = XML_DATE_PATTERN;
+//		// Make sure value and pattern are same length
+//		pattern = pattern.substring( 0, text.length() );
+//		text = text.substring( 0, pattern.length() );
+		SimpleDateFormat sdf = new SimpleDateFormat ( pattern ); 
+		Date result = sdf.parse( text );
+		return result;
+	}
+	
+	public Date findFirstDate( String expression, Date defaultValue )
+	{
+		Date result = defaultValue;
+		try
+		{
+			result = findFirstDate( expression );
+		}
+		catch( ParseException e )
+		{
+			// Eat it
+		}
+		return result;
+	}
 
 
 }
