@@ -59,11 +59,11 @@ extends
 		return get( len - 1 );
 	}
 	
-	public E peek( int nth )
-	{
-		int len = size() - 1;
-		return get( len - nth );
-	}
+//	public E peek( int nth )
+//	{
+//		int len = size() - 1;
+//		return get( len - nth );
+//	}
 
 	public boolean empty()
 	{
