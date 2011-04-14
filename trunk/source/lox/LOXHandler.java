@@ -163,19 +163,25 @@ extends
 	    
 	    ignorableWhitespace( ch, back, end - back );
 	}
-	public void startPrefixMapping( String prefix, String uri ) 
-		throws SAXException
-	{
-		System.out.printf( "startPrefixMapping prefix: %s, uri: %s\n", prefix, uri );
-	}
-	
-	public void endPrefixMapping( String prefix ) 
-		throws SAXException
-	{
-		System.out.printf( "startPrefixMapping prefix: %s\n", prefix );
-	}
+    
+//    public InputSource resolveEntity( String prefix, String uri )
+//    {
+//    	return null;
+//    }
 
-	private boolean _ignoreWhitespace = true;
+//	public void startPrefixMapping( String prefix, String uri ) 
+//		throws SAXException
+//	{
+//		System.out.printf( "startPrefixMapping prefix: %s, uri: %s\n", prefix, uri );
+//	}
+//	
+//	public void endPrefixMapping( String prefix ) 
+//		throws SAXException
+//	{
+//		System.out.printf( "startPrefixMapping prefix: %s\n", prefix );
+//	}
+
+	private boolean _ignoreWhitespace = false;
 	
 	public void setIgnoreWhitespace( boolean ignore )
 	{
@@ -211,59 +217,59 @@ extends
 		}
 	}
 
-	Locator _locator = null;
-	public void setDocumentLocator( Locator locator )
-	{
-//		System.out.println( "setDocumentLocator" + locator );
-//		_locator = locator;
-//		throw new NullPointerException( "setDocumentLocator" );
-	}
+//	Locator _locator = null;
+//	public void setDocumentLocator( Locator locator )
+//	{
+////		System.out.println( "setDocumentLocator" + locator );
+////		_locator = locator;
+////		throw new NullPointerException( "setDocumentLocator" );
+//	}
 
-	public void skippedEntity( String name ) 
-		throws SAXException
-	{
-		System.out.printf( "skippedEntity name: %s\n", name );
-//		throw new NullPointerException( "skippedEntity" );
-	}
+//	public void skippedEntity( String name ) 
+//		throws SAXException
+//	{
+//		System.out.printf( "skippedEntity name: %s\n", name );
+////		throw new NullPointerException( "skippedEntity" );
+//	}
 
-	public void notationDecl( String arg0, String arg1, String arg2) throws SAXException
-	{
-		System.out.println( "notationDecl" );
-//		throw new NullPointerException( "notationDecl" );
-		
-	}
+//	public void notationDecl( String arg0, String arg1, String arg2) throws SAXException
+//	{
+//		System.out.println( "notationDecl" );
+////		throw new NullPointerException( "notationDecl" );
+//		
+//	}
 
-	public void unparsedEntityDecl( String arg0, String arg1, String arg2, String arg3) throws SAXException
-	{
-		System.out.println( "unparsedEntityDecl" );
-//		throw new NullPointerException( "unparsedEntityDecl" );
-	}
+//	public void unparsedEntityDecl( String arg0, String arg1, String arg2, String arg3) throws SAXException
+//	{
+//		System.out.println( "unparsedEntityDecl" );
+////		throw new NullPointerException( "unparsedEntityDecl" );
+//	}
 
-	public InputSource resolveEntity( String arg0, String arg1) throws SAXException, IOException
-	{
-		System.out.println( "resolveEntity" );
-//		throw new NullPointerException( "reolveEntity" );
-		return null;
-	}
+//	public InputSource resolveEntity( String arg0, String arg1) throws SAXException, IOException
+//	{
+//		System.out.println( "resolveEntity" );
+////		throw new NullPointerException( "reolveEntity" );
+//		return null;
+//	}
 
-	public void error( SAXParseException arg0) throws SAXException
-	{
-		System.out.println( "error" );
-//		throw new NullPointerException( "error" );
-		
-	}
+//	public void error( SAXParseException arg0) throws SAXException
+//	{
+//		System.out.println( "error" );
+////		throw new NullPointerException( "error" );
+//		
+//	}
 
-	public void fatalError( SAXParseException arg0) throws SAXException
-	{
-		System.out.println( "fatalError" );
-//		throw new NullPointerException( "fatalError" );
-		
-	}
+//	public void fatalError( SAXParseException arg0) throws SAXException
+//	{
+//		System.out.println( "fatalError" );
+////		throw new NullPointerException( "fatalError" );
+//		
+//	}
 
-	public void warning( SAXParseException arg0) throws SAXException
-	{
-		System.out.println( "warning" );
-//		throw new NullPointerException( "warning" );
-		
-	}
+//	public void warning( SAXParseException arg0) throws SAXException
+//	{
+//		System.out.println( "warning" );
+////		throw new NullPointerException( "warning" );
+//		
+//	}
 }
