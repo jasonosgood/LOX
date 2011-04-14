@@ -159,6 +159,10 @@ implements
 			{
 				sb.append( ((Text) child).value() );
 			}
+			else if( child instanceof Whitespace )
+			{
+				sb.append( child.toString() );
+			}
 		}
 	}
 
@@ -186,8 +190,6 @@ implements
 		}
 			
 		_children[_size++] = child;
-		
-//		child.setParent( this );
 	}
 	
 	public int size()
@@ -200,7 +202,6 @@ implements
 		int size = size();
 		for( int nth = 0; nth < size; nth++ )
 		{
-//			_children[nth].setParent( null );
 			// We're told that nulling pointers helps the garbage collector
 			_children[nth] = null;
 		}
@@ -208,15 +209,6 @@ implements
 		_size = 0;
 	}
 
-//	public Content get( int index )
-//	{
-//		if( index < 0 || index >= _size )
-//		{
-//			throw new  IndexOutOfBoundsException( "index: " + index + ", size: " + _size );
-//		}
-//		return _children[index];
-//	}
-	
 	public boolean isEmpty()
 	{
 		return size() == 0;
