@@ -35,7 +35,7 @@ extends
 	{
 	}
 	
-	public String name()
+	public String key()
 	{
 		return null;
 	}

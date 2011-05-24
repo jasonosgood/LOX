@@ -10,11 +10,8 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.ext.DefaultHandler2;
 
 
 /**
@@ -26,7 +23,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class 
 	LOXHandler
 extends
-	DefaultHandler
+	DefaultHandler2
 {
 	private LOXBuilder _builder = null;
 	
@@ -162,6 +159,14 @@ extends
 	    }
 	    
 	    ignorableWhitespace( ch, back, end - back );
+	}
+    
+    @Override
+    public void comment( char[] ch, int start, int length ) 
+    	throws SAXException
+	{
+    	String value = new String( ch, start, length );
+    	_builder.comment( value );
 	}
     
 //    public InputSource resolveEntity( String prefix, String uri )

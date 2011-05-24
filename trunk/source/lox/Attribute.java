@@ -31,22 +31,22 @@ public class
 {
 	protected Attribute() {}
 	
-	public Attribute( String name, Object value )
+	public Attribute( String key, Object value )
 	{
-		name( name );
+		key( key );
 		value( value );
 	}
 	
-	private String _name;
+	private String _key;
 	
-	public String name()
+	public String key()
 	{
-		return _name;
+		return _key;
 	}
 	
-	public void name( String name )
+	public void key( String name )
 	{
-		_name = name;
+		_key = name;
 	}
 	
 	private Object _value;
@@ -80,6 +80,6 @@ public class
 	public void serialize( XMLWriter writer )
 		throws IOException
 	{
-		writer.attribute( name(), value() );
+		writer.attribute( key(), value() );
 	}
 }

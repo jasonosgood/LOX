@@ -26,10 +26,13 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 // TODO: Add a "list modified?" check for the iterator 
@@ -82,23 +85,55 @@ implements
 	{
 		if( _attributes != null ) 
 		{
-			_attributes.remove( attribute.name() );
+			_attributes.remove( attribute.key() );
 		}
 	}
 	
-	public Attribute getAttribute( String name )
+	public Attribute getAttribute( String key )
 	{
-		Attribute result = null;
-		
-		if( _attributes != null )
+		if( key == null )
 		{
-			int nth = _attributes.indexOf( name );
-			result = _attributes.get( nth );
+			throw new NullPointerException( "name" );
 		}
-		
+		if( _attributes == null ) return null;
+		for( Attribute attrib : _attributes )
+		{
+			if( key.equalsIgnoreCase( attrib.key()) )
+			{
+				return attrib;
+			}
+				
+		}
+		return null;
+	}
+
+	public boolean hasAttribute( String key )
+	{
+		boolean result = getAttribute( key ) != null;
 		return result;
 	}
 
+	public String getAttributeValue( String key )
+	{
+		return getAttributeValue( key, null );
+	}
+	
+	public String getAttributeValue( String key, String missing )
+	{
+		if( key == null )
+		{
+			throw new NullPointerException( "key" );
+		}
+		
+		Attribute attribute = getAttribute( key );
+		if( attribute == null ) return missing;
+		
+		Object value = attribute.value();
+		if( value == null ) return missing;
+		
+		return value.toString();
+	}
+	
 	public boolean hasChildren()
 	{
 		return size() > 0;
@@ -112,7 +147,7 @@ implements
 		
 		for( Attribute attribute : attributes() )
 		{
-			writer.attribute( attribute.name(), attribute.value() );
+			writer.attribute( attribute.key(), attribute.value() );
 		}
 		
 		writer.elementStart( hasChildren() );
@@ -177,6 +212,8 @@ implements
 			throw new NullPointerException( "child" );
 		}
 		
+		if( child instanceof NullElement ) return;
+		
 		if( _children == null )
 		{
 			_children = new Content[_increment];
@@ -238,6 +275,13 @@ implements
 		return find( expression, false );
 	}
 	
+	static class Spec
+	{
+		String tag = null;
+		String key = null;
+		String value = null;
+	}
+	
 	// TODO: validate expression
 	protected List<Element> find( String expression, boolean first )
 	{
@@ -246,10 +290,32 @@ implements
 			throw new NullPointerException( "expression" );
 		}
 		
-		ArrayList<String> query = new ArrayList<String>();
+		ArrayList<Spec> query = new ArrayList<Spec>();
 		for( String atom : expression.split( "/" ))
 		{
-			query.add( atom );
+			atom = atom.trim();
+			if( "".equals( atom )) continue;
+			Spec spec = new Spec();
+			if( "**".equals( atom ))
+			{
+				spec.tag = atom;
+				query.add( spec );
+			}
+			else if( Pattern.matches( "(\\w+|\\*)(\\[(\\w+)(\\:\\w+)*(\\=\\w+)?\\])?", atom ))
+			{
+				atom = atom.replace( '[', '=' );
+				atom = atom.replace( ']', '=' );
+				
+				String[] all = atom.split( "=" );
+				Iterator<String> i = Arrays.asList( all ).iterator();
+				if( i.hasNext() ) spec.tag = i.next();
+				if( i.hasNext() ) spec.key = i.next();
+				if( i.hasNext() ) spec.value = i.next();
+			    if( spec.tag != null )
+			    {
+			    	query.add( spec );
+			    }
+			}
 		}
 		
 		ArrayList<Element> result = new ArrayList<Element>();
@@ -257,15 +323,50 @@ implements
 		return result;
 	}
 
-	private void find( boolean first, Element parent, ArrayList<String> query, int nth, boolean seeking, ArrayList<Element> result )
+	private void find( boolean first, Element parent, ArrayList<Spec> query, int nth, boolean seeking, ArrayList<Element> result )
 	{
-		String spot = query.get( nth );
+		Spec spec = query.get( nth );
 		for( Content content : parent )
 		{
 			if( content instanceof Element )
 			{
 				Element child = (Element) content;
-				if( "*".equals( spot ) || child.name().equalsIgnoreCase( spot ))
+				boolean match = false;
+				
+				if( "*".equals( spec.tag ))
+				{
+					match = true;
+				}
+				else 
+				{
+					if( child.name().equalsIgnoreCase( spec.tag ))
+					{
+						if( spec.key == null )
+						{
+							match = true;
+						}
+						else
+						{
+							if( child.hasAttribute( spec.key ))
+							{
+								if( spec.value == null )
+								{
+									match = true;
+								}
+								else
+								{
+									String value = child.getAttribute( spec.key ).value().toString();
+									if( value.equalsIgnoreCase( spec.value ))
+									{
+										match = true;
+									}
+								}
+							}
+						}
+					}
+				}
+				
+				if( match )
 				{
 					if( nth + 1 < query.size() )
 					{
@@ -276,7 +377,7 @@ implements
 						result.add( child );
 					}
 				}
-				else if( "**".equals( spot ))
+				else if( "**".equals( spec.tag ))
 				{
 					find( first, child, query, nth + 1, true, result );
 				}
