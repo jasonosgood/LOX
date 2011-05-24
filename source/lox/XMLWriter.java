@@ -216,6 +216,7 @@ implements
 	public void elementStart( String name )
 		throws IOException
 	{
+		stillText = false;
 		if( name == null )
 		{
 			throw new NullPointerException( "name" );
@@ -229,6 +230,7 @@ implements
 	public void elementStart( boolean children )
 		throws IOException
 	{
+		stillText = false;
 		if( !children )
 		{
 			_indent--;
@@ -242,6 +244,7 @@ implements
 	public void elementEnd( String name )
 		throws IOException
 	{
+		stillText = false;
 		if( name == null )
 		{
 			throw new NullPointerException( "name" );
@@ -275,15 +278,24 @@ implements
 		_writer.write( '\"' );
 	}
 	
+	boolean stillText = false;
+	
 	public void text( Object text )
 		throws IOException
 	{
-		_indent++;
-		indent();
+		if( !stillText )
+		{
+			_indent++;
+			indent();
+		}
 		String temp = format( text );
 		escape( temp );
-		newline();
-		_indent--;
+		if( !stillText )
+		{
+			newline();
+			_indent--;
+		}
+		stillText = true;
 	}
 
 	protected void escape( String text ) 
@@ -369,6 +381,7 @@ implements
 	public void comment( String value )
 		throws IOException
 	{
+		stillText = false;
 		_indent++;
 		indent();
 		_writer.write( "<!-- " );
@@ -381,6 +394,7 @@ implements
 	public void pi( String target, String data )
 		throws IOException
 	{
+		stillText = false;
 		_writer.write( "<?" );
 		_writer.write( target );
 		_writer.write( ' ' );
@@ -392,6 +406,7 @@ implements
 	public void cdata( String value )
 		throws IOException
 	{
+		stillText = false;
 		_writer.write( "<![CDATA[ " );
 		_writer.write( value );
 		_writer.write( " ]]>" );

@@ -26,7 +26,7 @@ public class
 	LOXBuilder
 {
 	private Document _document = null;
-	private Stack<Element> _stack = null;
+	private Stack _stack = null;
 	private Checker _checker = NullChecker.NULL;
 
 	private boolean _leaf = false;
@@ -34,7 +34,7 @@ public class
 	
 	public LOXBuilder()
 	{
-		_stack = new Stack<Element>();
+		_stack = new Stack();
 	}
 
 	public void setChecker( Checker checker )

@@ -43,7 +43,7 @@ public class
 	XMLBuilder
 {
 	private XMLWriter _writer;
-	private Stack<String> _stack;
+	private java.util.Stack<String> _stack;
 	private Checker _checker = NullChecker.NULL;
 	
 	private boolean _document = false;
@@ -69,7 +69,7 @@ public class
 	public void setWriter( Writer writer )
 	{
 		_writer = new XMLWriter( writer );
-		_stack = new Stack<String>();
+		_stack = new java.util.Stack<String>();
 	}
 	
 	public void setChecker( Checker checker )
@@ -144,7 +144,7 @@ public class
 			throw new IllegalStateException( "duplicate doctype" );
 		}
 	}
-
+	
 	public void element( String name )
 		throws IOException
 	{
@@ -173,6 +173,14 @@ public class
 		_tailed = false;
 	}
 	
+	public void element( String name, Object text )
+		throws IOException
+	{
+		element( name );
+		text( text );
+		pop();
+	}
+
 	public void attribute( String name, Object value )
 		throws IOException
 	{
