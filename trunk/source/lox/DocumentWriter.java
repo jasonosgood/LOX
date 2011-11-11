@@ -17,7 +17,7 @@ public interface DocumentWriter
 	
 	void attribute( String name, Object value ) throws IOException;
 	
-	void text( Object value ) throws IOException;;
+	void text( Object value, boolean escape ) throws IOException;;
 
 	void cdata( String value ) throws IOException;
 
