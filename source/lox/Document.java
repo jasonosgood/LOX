@@ -125,4 +125,12 @@ extends
 		fake.add( root );
 		return fake.find( expression );
 	}
+	
+	public Element findFirst( String expression )
+	{
+		Element root = getRoot();
+		Element fake = new Element();
+		fake.add( root );
+		return fake.findFirst( expression );
+	}
 }

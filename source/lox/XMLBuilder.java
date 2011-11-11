@@ -171,6 +171,12 @@ public class
 		_stack.add( name );
 		_children = false;
 		_tailed = false;
+//		// HTML DTD says these elements always require closing tags
+//		if( "p".equalsIgnoreCase( name ) || "script".equalsIgnoreCase( name ))
+//		{
+//			_children = true;
+////			_tailed = true;
+//		}
 	}
 	
 	public void element( String name, Object text )
@@ -213,7 +219,10 @@ public class
 	{
 		_children = true;
 		bracket();
-		_writer.text( value );
+		String top = _stack.peek();
+		// TODO: Add "style" and "pre"?
+		boolean noescape = "script".equalsIgnoreCase( top );
+		_writer.text( value, !noescape );
 	}
 	
 	public void comment( String value )
@@ -269,8 +278,8 @@ public class
 	private void bracket()
 		throws IOException
 	{
-		String top = _stack.peek();
-		if( top != null )
+		// Fucking stupid Stack implementation
+		if( !_stack.isEmpty() )
 		{
 			if( !_tailed )
 			{
@@ -278,6 +287,16 @@ public class
 				_tailed = true;
 			}
 		}
+//		
+//		String top = _stack.peek();
+//		if( top != null )
+//		{
+//			if( !_tailed )
+//			{
+//				_writer.elementStart( _children );
+//				_tailed = true;
+//			}
+//		}
 	}
 	
 	public void pop()
@@ -286,6 +305,14 @@ public class
 		String top = _stack.pop();
 		if( top != null )
 		{
+			// HTML DTD says these elements always require closing tags
+			// TODO: Complete list of tags
+			if( "p".equalsIgnoreCase( top ) || "script".equalsIgnoreCase( top ))
+			{
+				_children = true;
+				bracket();
+			}
+			
 			if( _children )
 			{
 				_writer.elementEnd( top );

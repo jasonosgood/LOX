@@ -36,6 +36,17 @@ import java.util.HashMap;
  *
  */
 
+/*
+ when to not escape HTML
+
+script
+pre
+code
+style
+
+http://www.javapractices.com/topic/TopicAction.do?Id=96
+ */
+
 //TODO: Support formatters
 public class 
 	XMLWriter 
@@ -184,7 +195,7 @@ implements
 	public void document()
 		throws IOException
 	{
-		_writer.write( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" );
+//		_writer.write( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" );
 		newline();
 	}
 	
@@ -280,7 +291,7 @@ implements
 	
 	boolean stillText = false;
 	
-	public void text( Object text )
+	public void text( Object text, boolean escape )
 		throws IOException
 	{
 		if( !stillText )
@@ -289,7 +300,14 @@ implements
 			indent();
 		}
 		String temp = format( text );
-		escape( temp );
+		if( escape )
+		{
+			escape( temp );
+		}
+		else
+		{
+			_writer.write( temp );
+		}
 		if( !stillText )
 		{
 			newline();
