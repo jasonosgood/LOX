@@ -77,10 +77,21 @@ extends
 	
 	static class Spec
 	{
+		Spec( Spec spec ) { this.next = spec; }
 		String tag = null;
 		String key = null;
 		String value = null;
 		Spec next = null;
+
+		int size() 
+		{ 
+			return 1 + ( next == null ? 0 : next.size() ); 
+		}
+		
+		public String toString()
+		{
+			return ( next == null ? "" : next.toString() + "/" ) + tag;
+		}
 	}
 	
 	public boolean match( String expression )
@@ -90,20 +101,19 @@ extends
 			throw new NullPointerException( "expression" );
 		}
 		
-		Spec head = new Spec();
-		Spec tail = head;
+		Spec head = null;
 		for( String atom : expression.split( "/" ))
 		{
 			atom = atom.trim();
 			if( "".equals( atom )) continue;
-
-			tail.next = new Spec();
-			tail = tail.next;
+	
+			head = new Spec( head );
 			
 			if( "**".equals( atom ))
 			{
-				tail.tag = atom;
+				head.tag = atom;
 			}
+			// matches "tag[key=value]"
 			else if( Pattern.matches( "(\\w+|\\*)(\\[(\\w+)(\\:\\w+)*(\\=\\w+)?\\])?", atom ))
 			{
 				atom = atom.replace( '[', '=' );
@@ -111,25 +121,27 @@ extends
 				
 				String[] all = atom.split( "=" );
 				Iterator<String> i = Arrays.asList( all ).iterator();
-				if( i.hasNext() ) tail.tag = i.next();
-				if( i.hasNext() ) tail.key = i.next();
-				if( i.hasNext() ) tail.value = i.next();
+				if( i.hasNext() ) head.tag = i.next();
+				if( i.hasNext() ) head.key = i.next();
+				if( i.hasNext() ) head.value = i.next();
 			}
 			
 		}
 		
-		if( head.next == null ) return true;
+		if( head == null ) return true;
 		
-		int nth = 0;
+		int nth = size() - 1;
 		
-		return match( head.next, nth, false );
+		return match( head, nth, false );
 	}
 	
-	boolean match( Spec spec, int nth, boolean seeking )
+	private boolean match( Spec spec, int nth, boolean seeking )
 	{
-		if( spec == null && nth == size() ) return true;
+		if( seeking && spec == null ) return true;
 		
-		if( spec == null || nth == size() ) return false;
+		if( spec == null && nth < 0 ) return true;
+		
+		if( spec == null || nth < 0 ) return false;
 		
 		Element child = this.get( nth );
 		boolean match = false;
@@ -164,7 +176,7 @@ extends
 		{
 //			if( spec.next == null ) return true;
 //			if( nth == size() ) return false;
-			return match( spec.next, nth + 1, false );
+			return match( spec.next, nth - 1, false );
 		}
 		else if( "**".equals( spec.tag ))
 		{
@@ -172,7 +184,7 @@ extends
 		}
 		else if( seeking )
 		{
-			return match( spec, nth + 1, true );
+			return match( spec, nth - 1, true );
 		}
 		return false;
 	}

@@ -31,7 +31,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
@@ -81,12 +80,24 @@ implements
 		_attributes.add( attribute );
 	}
 	
+	public Element addAttribute( String key, Object value )
+	{
+		Attribute attrib = new Attribute( key, value );
+		add( attrib);
+		return this;
+	}
+	
 	public void remove( Attribute attribute )
 	{
 		if( _attributes != null ) 
 		{
 			_attributes.remove( attribute.key() );
 		}
+	}
+	
+	public String getID()
+	{
+		return getAttributeValue( "id" );
 	}
 	
 	public Attribute getAttribute( String key )
@@ -177,18 +188,23 @@ implements
 
 	public String getText()
 	{
+		return getText( true );
+	}
+	
+	public String getText( boolean children )
+	{
 		StringBuilder sb = new StringBuilder();
-		getText( sb );
+		getText( sb, children );
 		return sb.toString();
 	}
 	
-	protected void getText( StringBuilder sb )
+	protected void getText( StringBuilder sb, boolean children )
 	{
 		for( Content child : this )
 		{
-			if( child instanceof Element )
+			if( child instanceof Element && children )
 			{
-				((Element) child).getText( sb );
+				((Element) child).getText( sb, true );
 			}
 			else if( child instanceof Text )
 			{
@@ -301,8 +317,10 @@ implements
 				spec.tag = atom;
 				query.add( spec );
 			}
+			// matches "tag[key=value]"
 			else if( Pattern.matches( "(\\w+|\\*)(\\[(\\w+)(\\:\\w+)*(\\=\\w+)?\\])?", atom ))
 			{
+				// "tag[key=value]" becomes "tag=key=value="
 				atom = atom.replace( '[', '=' );
 				atom = atom.replace( ']', '=' );
 				
@@ -326,6 +344,10 @@ implements
 	private void find( boolean first, Element parent, ArrayList<Spec> query, int nth, boolean seeking, ArrayList<Element> result )
 	{
 		Spec spec = query.get( nth );
+		if( "**".equals( spec.tag ))
+		{
+			find( first, parent, query, nth + 1, true, result );
+		}
 		for( Content content : parent )
 		{
 			if( content instanceof Element )
@@ -376,10 +398,6 @@ implements
 					{
 						result.add( child );
 					}
-				}
-				else if( "**".equals( spec.tag ))
-				{
-					find( first, child, query, nth + 1, true, result );
 				}
 				else if( seeking )
 				{

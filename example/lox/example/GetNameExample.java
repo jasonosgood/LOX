@@ -38,6 +38,8 @@ public class
 		System.out.println( child );
 		List<Element> children = root.find( "child" );
 		System.out.println( children );
+		List<Element> kids = root.find( "**/child" );
+		System.out.println( children );
 		
 //		List ugh = document.query( "//child" );
 //		for( Object b :ugh )
