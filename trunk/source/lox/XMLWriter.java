@@ -71,7 +71,7 @@ implements
 	public void close() 
 		throws IOException
 	{
-		_writer.close();
+//		_writer.close();
 	}
 
 	@Override
@@ -195,6 +195,7 @@ implements
 	public void document()
 		throws IOException
 	{
+		_writer.write( "<!DOCTYPE html>" );
 //		_writer.write( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" );
 		newline();
 	}
@@ -202,24 +203,24 @@ implements
 	public void doctype( String name, String systemID, String publicID )
 		throws IOException
 	{
-		if( isNotNull( name) && isNotNull( systemID ))
-		{
-			_writer.write( "<!DOCTYPE " );
-			_writer.write( name );
-			_writer.write( " PUBLIC \"" );
-			_writer.write( systemID );
-			_writer.write( '\"' );
-			
-			if( publicID != null )
-			{
-				_writer.write( " \"" );
-				_writer.write( publicID );
-				_writer.write( '\"' );
-			}
-			
-			_writer.write( '>' );
-			newline();
-		}
+//		if( isNotNull( name) && isNotNull( systemID ))
+//		{
+//			_writer.write( "<!DOCTYPE " );
+//			_writer.write( name );
+//			_writer.write( " PUBLIC \"" );
+//			_writer.write( systemID );
+//			_writer.write( '\"' );
+//			
+//			if( publicID != null )
+//			{
+//				_writer.write( " \"" );
+//				_writer.write( publicID );
+//				_writer.write( '\"' );
+//			}
+//			
+//			_writer.write( '>' );
+//			newline();
+//		}
 	}
 	
 	private int _indent = -1;

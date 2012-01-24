@@ -1,6 +1,7 @@
 package lox.example;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,6 +18,12 @@ public class
 	public static void main( String[] args)
 		throws LOXException, IOException
 	{
+		DateFormat format = SimpleDateFormat.getDateInstance( SimpleDateFormat.FULL );
+		Date now = new Date();
+		PrintStream out = System.out;
+		out.println( format.format( now ));
+		out.println( now );
+		
 		LOXBuilder example = new LOXBuilder()
 		{
 			{
@@ -36,16 +43,20 @@ public class
 		
 		// No Date formatting
 		{
-			XMLWriter writer = new XMLWriter( System.out );
+			XMLWriter writer = new XMLWriter( out );
 			document.serialize( writer );
-		}
-		
-		// Using SimpleDateFormat.MEDIUM
-		{
-			XMLWriter writer = new XMLWriter( System.out );
-			DateFormat format = SimpleDateFormat.getDateInstance( SimpleDateFormat.MEDIUM );
-			writer.addFormat( Date.class, format );
-			document.serialize( writer );
+//			writer.flush();
+//			writer.close();
+//		}
+//		
+//		// Using SimpleDateFormat.MEDIUM
+//		{
+			XMLWriter writer2 = new XMLWriter( out );
+			DateFormat format2 = SimpleDateFormat.getDateInstance( SimpleDateFormat.MEDIUM );
+			writer2.addFormat( Date.class, format2 );
+			document.serialize( writer2 );
+			writer2.flush();
+//			writer.close();
 		}
 	}
 }

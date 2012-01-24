@@ -1,7 +1,10 @@
 package lox.test;
 
+import java.util.List;
+
 import junit.framework.TestCase;
 import lox.Document;
+import lox.Element;
 import lox.LOXBuilder;
 import lox.LOXException;
 
@@ -37,6 +40,15 @@ public class BasicLOX extends TestCase
 		builder.attribute( "name", "value" );
 		
 		Document document = builder.getDocument();
+		List<Element> list = document.find( "root" );
+		for( Element e : list )
+		{
+			List<Element> ugh = e.find( "**/child0" );
+			for( Element d : ugh )
+			{
+				System.out.println( d );
+			}
+		}
 		System.out.print( document );
 	}
 }

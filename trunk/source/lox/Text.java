@@ -65,6 +65,6 @@ extends
 	public void serialize( DocumentWriter writer ) 
 		throws IOException
 	{
-		writer.text( value() );
+		writer.text( value(), true );
 	}
 }
