@@ -58,6 +58,7 @@ public class TestStackMatching
 		stack.add( new Element( "span" ));
 		System.out.println( "true : " + stack.match( "li/a/span" ) );
 		System.out.println( "true : " + stack.match( "li/**/span" ) );
+		System.out.println( "true : " + stack.match( "li/a/**/span" ) );
 	}
 
 }
