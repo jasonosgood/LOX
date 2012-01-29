@@ -88,7 +88,7 @@ implements
 		_writer.write( arg0, arg1, arg2 );
 	}
 	
-	private boolean _pretty = true;
+	private boolean _pretty = false;
 	
 	public void setPretty( boolean pretty ) 
 	{ 
@@ -311,7 +311,7 @@ implements
 		}
 		if( !stillText )
 		{
-			newline();
+//			newline();
 			_indent--;
 		}
 		stillText = true;
