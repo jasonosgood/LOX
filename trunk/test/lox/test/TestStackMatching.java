@@ -29,6 +29,7 @@ public class TestStackMatching
 		System.out.println( "true : " + stack.match( "a/b/*[martini]" ) );
 		System.out.println( "true : " + stack.match( "**/c" ) );
 		System.out.println( "true : " + stack.match( "**/c[martini]" ) );
+		System.out.println( "true : " + stack.match( "**/*[martini]" ) );
 //		System.out.println( "true : " + stack.match( "**/a/**/*[martini]" ));
 	}
 	// 
