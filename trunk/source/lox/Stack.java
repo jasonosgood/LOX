@@ -70,6 +70,19 @@ extends
 		return get( len - 1 - nth );
 	}
 	
+	public Element peek( String name )
+	{
+		for( int nth = size() - 1; nth != 0; nth-- )
+		{
+			Element peek = get( nth );
+			if( name.equalsIgnoreCase( peek.name() ))
+			{
+				return peek;
+			}
+		}
+		return null;
+	}
+	
 	public boolean empty()
 	{
 		return size() == 0;
