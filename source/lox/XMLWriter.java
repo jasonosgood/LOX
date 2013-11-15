@@ -290,6 +290,17 @@ implements
 		_writer.write( '\"' );
 	}
 	
+	public void attribute( String name )
+		throws IOException
+	{
+		if( name == null )
+		{
+			throw new NullPointerException( "name" );
+		}
+		_writer.write( ' ' );
+		_writer.write( name );
+	}
+		
 	boolean stillText = false;
 	
 	public void text( Object text, boolean escape )
@@ -329,15 +340,27 @@ implements
 			switch( c )
 			{
 				case '\t':
-					_writer.write( "&#x09;" );
+					if( !getPretty() )
+					{
+//						_writer.write( "&#x09;" );
+						_writer.write( c );
+					}
 					break;
 					
 				case '\n':
-					_writer.write( "&#x0A;" );
+					if( !getPretty() )
+					{
+//						_writer.write( "&#x0A;" );
+						_writer.write( c );
+					}
 					break;
 				
 				case '\r':
-					_writer.write( "&#x0D;" );
+					if( !getPretty() )
+					{
+//						_writer.write( "&#x0D;" );
+						_writer.write( c );
+					}
 					break;
 					
 				// Not allowed, eat these characters

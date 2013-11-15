@@ -36,6 +36,7 @@ import java.util.regex.Pattern;
 
 // TODO: Add a "list modified?" check for the iterator 
 // TODO: What's an ideal/optimal value for the increment function? Check page/block allocation w/ byte boundaries, etc.
+// TODO: Add iterator for just child elements
 @SuppressWarnings("serial")
 public class 
 	Element
