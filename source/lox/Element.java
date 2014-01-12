@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
@@ -318,22 +319,23 @@ implements
 				spec.tag = atom;
 				query.add( spec );
 			}
-			// matches "tag[key=value]"
-			else if( Pattern.matches( "(\\w+|\\*)(\\[(\\w+)(\\:\\w+)*(\\=\\w+)?\\])?", atom ))
+//			else if( "..".equals( atom ))
+//			{
+//				spec.tag = atom;
+//				query.add( spec );
+//			}
+			else
 			{
-				// "tag[key=value]" becomes "tag=key=value="
-				atom = atom.replace( '[', '=' );
-				atom = atom.replace( ']', '=' );
-				
-				String[] all = atom.split( "=" );
-				Iterator<String> i = Arrays.asList( all ).iterator();
-				if( i.hasNext() ) spec.tag = i.next();
-				if( i.hasNext() ) spec.key = i.next();
-				if( i.hasNext() ) spec.value = i.next();
-			    if( spec.tag != null )
-			    {
-			    	query.add( spec );
-			    }
+				// matches "tag[key=value]"
+				Pattern pattern = Pattern.compile( "(\\w+|\\*)(\\[(\\w+)(\\:\\w+)*(\\=(\\w+))?\\])?" );
+				Matcher matcher = pattern.matcher( atom );
+				if( matcher.find() )
+				{
+					spec.tag = matcher.group( 1 );
+					spec.key = matcher.group( 3 );
+					spec.value = matcher.group( 6 );
+					query.add( spec );
+				}
 			}
 		}
 		
