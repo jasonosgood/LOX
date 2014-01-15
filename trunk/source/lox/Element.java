@@ -327,13 +327,13 @@ implements
 			else
 			{
 				// matches "tag[key=value]"
-				Pattern pattern = Pattern.compile( "(\\w+|\\*)(\\[(\\w+)(\\:\\w+)*(\\=(\\w+))?\\])?" );
+				Pattern pattern = Pattern.compile( "(\\w+|\\*)(\\[((\\w+)(\\:\\w+)*)(\\=(\\w+))?\\])?" );
 				Matcher matcher = pattern.matcher( atom );
 				if( matcher.find() )
 				{
 					spec.tag = matcher.group( 1 );
 					spec.key = matcher.group( 3 );
-					spec.value = matcher.group( 6 );
+					spec.value = matcher.group( 7 );
 					query.add( spec );
 				}
 			}

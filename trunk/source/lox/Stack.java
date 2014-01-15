@@ -130,28 +130,15 @@ extends
 			else
 			{
 				// matches "tag[key=value]"
-				Pattern pattern = Pattern.compile( "(\\w+|\\*)(\\[(\\w+)(\\:\\w+)*(\\=(\\w+))?\\])?" );
+				Pattern pattern = Pattern.compile( "(\\w+|\\*)(\\[((\\w+)(\\:\\w+)*)(\\=(\\w+))?\\])?" );
 				Matcher matcher = pattern.matcher( atom );
 				if( matcher.find() )
 				{
 					head.tag = matcher.group( 1 );
 					head.key = matcher.group( 3 );
-					head.value = matcher.group( 6 );
+					head.value = matcher.group( 7 );
 				}
 			}
-//			// matches "tag[key=value]"
-//			else if( Pattern.matches( "(\\w+|\\*)(\\[(\\w+)(\\:\\w+)*(\\=\\w+)?\\])?", atom ))
-//			{
-//				atom = atom.replace( '[', '=' );
-//				atom = atom.replace( ']', '=' );
-//				
-//				String[] all = atom.split( "=" );
-//				Iterator<String> i = Arrays.asList( all ).iterator();
-//				if( i.hasNext() ) head.tag = i.next();
-//				if( i.hasNext() ) head.key = i.next();
-//				if( i.hasNext() ) head.value = i.next();
-//			}
-			
 		}
 		
 		if( head == null ) return true;
