@@ -27,6 +27,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -36,7 +37,6 @@ import java.util.regex.Pattern;
 
 
 // TODO: Add a "list modified?" check for the iterator 
-// TODO: What's an ideal/optimal value for the increment function? Check page/block allocation w/ byte boundaries, etc.
 // TODO: Add iterator for just child elements
 @SuppressWarnings("serial")
 public class 
@@ -44,8 +44,11 @@ public class
 extends
 	Content
 implements
-	Iterable<Content>
+	Iterable<Content>, Comparable<Element>
 {
+	private static int __counter = 0;
+	private int _nth = __counter++;
+	
 	protected Element() {}
 	
 	public Element( String name ) 
@@ -63,6 +66,11 @@ implements
 	public String name()
 	{
 		return _name;
+	}
+	
+	public int compareTo( Element that )
+	{
+		return Integer.compare( this._nth, that._nth );
 	}
 	
 	private LinkedList<Attribute> _attributes;
@@ -290,7 +298,8 @@ implements
 
 	public List<Element> find( String expression )
 	{
-		return find( expression, false );
+		List<Element> list = find( expression, false );
+		return list;
 	}
 	
 	static class Spec
@@ -308,39 +317,47 @@ implements
 			throw new NullPointerException( "expression" );
 		}
 		
-		ArrayList<Spec> query = new ArrayList<Spec>();
-		for( String atom : expression.split( "/" ))
+		ArrayList<Element> result = new ArrayList<>();
+
+		for( String clause : expression.split( "\\|" ))
 		{
-			atom = atom.trim();
-			if( "".equals( atom )) continue;
-			Spec spec = new Spec();
-			if( "**".equals( atom ))
+			ArrayList<Spec> query = new ArrayList<Spec>();
+			for( String atom : clause.split( "/" ))
 			{
-				spec.tag = atom;
-				query.add( spec );
-			}
-//			else if( "..".equals( atom ))
-//			{
-//				spec.tag = atom;
-//				query.add( spec );
-//			}
-			else
-			{
-				// matches "tag[key=value]"
-				Pattern pattern = Pattern.compile( "(\\w+|\\*)(\\[((\\w+)(\\:\\w+)*)(\\=(\\w+))?\\])?" );
-				Matcher matcher = pattern.matcher( atom );
-				if( matcher.find() )
+				atom = atom.trim();
+				if( "".equals( atom )) continue;
+				Spec spec = new Spec();
+				if( "**".equals( atom ))
 				{
-					spec.tag = matcher.group( 1 );
-					spec.key = matcher.group( 3 );
-					spec.value = matcher.group( 7 );
+					spec.tag = atom;
 					query.add( spec );
 				}
+	//			else if( "..".equals( atom ))
+	//			{
+	//				spec.tag = atom;
+	//				query.add( spec );
+	//			}
+				else
+				{
+					// matches "tag[key=value]"
+					Pattern pattern = Pattern.compile( "(\\w+|\\*)(\\[((\\w+)(\\:\\w+)*)(\\=(\\w+))?\\])?" );
+					Matcher matcher = pattern.matcher( atom );
+					if( matcher.find() )
+					{
+						spec.tag = matcher.group( 1 );
+						spec.key = matcher.group( 3 );
+						spec.value = matcher.group( 7 );
+						query.add( spec );
+					}
+				}
 			}
+			
+			find( first, this, query, 0, false, result );
 		}
-		
-		ArrayList<Element> result = new ArrayList<Element>();
-		find( first, this, query, 0, false, result );
+		// TODO: Maybe Replace _nth & comparator with iterative path expression
+		// evaluator which returns elements in document order
+		Collections.sort( result );
+
 		return result;
 	}
 
@@ -412,6 +429,12 @@ implements
 		}
 	}
 
+	/**
+	 * Either returns first matching Element or NullElement.
+	 * 
+	 * @param expression
+	 * @return
+	 */
 	public Element findFirst( String expression )
 	{
 		Element result = NullElement.NULL_ELEMENT;
@@ -512,5 +535,5 @@ implements
 		return result;
 	}
 
-
+	public boolean isNull() { return false; }
 }

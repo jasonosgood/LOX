@@ -155,4 +155,7 @@ extends
 		return false;
 	}
 	
+	@Override
+	public boolean isNull() { return true; }
+	
 }

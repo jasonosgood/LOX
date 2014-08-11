@@ -15,7 +15,8 @@ import org.xml.sax.SAXException;
 
 public class Expression 
 {
-	public static void main( String[] args ) throws ParserConfigurationException, SAXException, IOException
+	public static void main( String[] args ) 
+		throws ParserConfigurationException, SAXException, IOException
 	{
 		InputStream in = new FileInputStream( "./test/lox/test/zooinventory.xml" );
 		Document doc = LOXHandler.load( in );
@@ -33,9 +34,16 @@ public class Expression
 		
 		List<Element> animals2 = doc.find( "*/Animal" );
 		System.out.println( "animals2 found: " + animals2.size() );
+
+//		{
+//			Element nameParent = doc.getRoot().findFirst( "*/Name/.." );
+//			System.out.println( "nameX found: " + nameParent.getText() );
+//		}
 		
-		Element nameX = doc.getRoot().findFirst( "*/Name" );
-		System.out.println( "nameX found: " + nameX.getText() );
+		{
+			Element name = doc.getRoot().findFirst( "*/Name" );
+			System.out.println( "nameX found: " + name.getText() );
+		}
 		
 		List<Element> names = doc.find( "Inventory/*/Name" );
 		System.out.println( "names found: " + names.size() );

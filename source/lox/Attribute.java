@@ -60,6 +60,11 @@ public class
 	{
 		return _value;
 	}
+	
+	public String valueAsString()
+	{
+		return _value != null ? _value.toString() : null;
+	}
 
 	public String toString()
 	{
