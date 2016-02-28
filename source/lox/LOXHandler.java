@@ -1,3 +1,8 @@
+/* Copyright 2007, 2016 Jason Aaron Osgood
+
+   See copyright.txt for license.
+*/
+
 package lox;
 
 import java.io.File;
@@ -16,9 +21,6 @@ import org.xml.sax.ext.DefaultHandler2;
 
 /**
  * Convert SAX events into a LOX object graph.
- * 
- * @author Jason Aaron Osgood
- *
  */
 public class 
 	LOXHandler

@@ -18,19 +18,19 @@ public class TestStackMatching
 		Stack stack = new Stack();
 		stack.add( new Element( "a" ));
 		stack.add( new Element( "b" ));
-		stack.add( new Element( "c" ).addAttribute( "martini", "goof" ));
+		stack.add( new Element( "c" ).addAttribute( "teacozy", "goof" ));
 		
-		System.out.println( "false : " + stack.match( "*[martini]" ) );
+		System.out.println( "false : " + stack.match( "*[teacozy]" ) );
 		System.out.println( "false : " + stack.match( "a/b" ) );
 		System.out.println( "true : " + stack.match( "a/b/c" ) );
-		System.out.println( "true : " + stack.match( "a/b/c[martini]" ) );
-		System.out.println( "false : " + stack.match( "a/b/c/d[martini]" ) );
-		System.out.println( "false : " + stack.match( "a/d/c[martini]" ) );
-		System.out.println( "true : " + stack.match( "a/b/*[martini]" ) );
+		System.out.println( "true : " + stack.match( "a/b/c[teacozy]" ) );
+		System.out.println( "false : " + stack.match( "a/b/c/d[teacozy]" ) );
+		System.out.println( "false : " + stack.match( "a/d/c[teacozy]" ) );
+		System.out.println( "true : " + stack.match( "a/b/*[teacozy]" ) );
 		System.out.println( "true : " + stack.match( "**/c" ) );
-		System.out.println( "true : " + stack.match( "**/c[martini]" ) );
-		System.out.println( "true : " + stack.match( "**/*[martini]" ) );
-//		System.out.println( "true : " + stack.match( "**/a/**/*[martini]" ));	
+		System.out.println( "true : " + stack.match( "**/c[teacozy]" ) );
+		System.out.println( "true : " + stack.match( "**/*[teacozy]" ) );
+//		System.out.println( "true : " + stack.match( "**/a/**/*[teacozy]" ));
 	}
 	// 
 	public static void secondTest()
