@@ -291,7 +291,10 @@ implements
 		String key = null;
 		String value = null;
 	}
-	
+
+	// matches "tag[key=value]"
+	static Pattern pattern = Pattern.compile( "(\\w+|\\*)(\\[((\\w+)(\\:\\w+)*)(\\=(\\w+))?\\])?" );
+
 	// TODO: validate expression
 	protected List<Element> find( String expression, boolean first )
 	{
@@ -322,8 +325,6 @@ implements
 	//			}
 				else
 				{
-					// matches "tag[key=value]"
-					Pattern pattern = Pattern.compile( "(\\w+|\\*)(\\[((\\w+)(\\:\\w+)*)(\\=(\\w+))?\\])?" );
 					Matcher matcher = pattern.matcher( atom );
 					if( matcher.find() )
 					{
