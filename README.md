@@ -1,8 +1,11 @@
 Simple, practical library to read, write, build, navigate, 
-and query XML documents. Great for web scrapping. Also good 
-for building DOMs.
+and query XML documents. Great for web scrapping. Pretty good 
+for building documents.
 
 Alternative to W3C DOM, JDOM, dom4j, XOM, XPath, and XQuery.
+
+Ignores or mitigates parts of the XML spec that aren't or shouldn't 
+be used, such as namespaces and DTD defined entities.
 
 Notable differences, especially compared to W3C DOM:
 
@@ -10,25 +13,27 @@ Notable differences, especially compared to W3C DOM:
    * Java first vs port of JavaScript design
    * Just one DOM interface (Content), the rest are concrete classes
    * Document, DocType, Attribute do not implement Content
-   * No more ```instanceof``` and ```getNodeType()``` checks
- 
- * Navigation
-   * Simple iteration like ```for( Element child : parent ) {...}```
-   * Children do not have parent references, reducing memory footprint
+   * No parent references
+   * Generally harder to make a malformed documents
 
  * Querying
-   * UNIX style globbing like ```/fruit/**/color[attr=red]``` (vs XPath) 
-   * Easier to debug
-   * Baked-in vs separate tooling
+   * UNIX style globbing (vs XPath), such as find all spans inside list items ```**/li/**/span```  
    * Aggregate results return List<Element> (vs NodeList, Nodes)
    * Convenient typed results like ```Element.findFirstInteger( ... )```
+   * Easier to debug
+   * Baked-in vs separate tooling
 
  * Practical
-   * ```toString()``` outputs formatted XML; great for debugging
    * Namespaces treated as syntactic vinegar having no semantic value
    * Entities ignored, apart from encoding syntax like ```&amp;``` 
+   * ```toString()``` outputs formatted XML; great for debugging in IDEs
    * Builders for making DOMs, writing streams
-   * Optional data type Formatters
+   * Customizable formatters, eg change default date format
+   * Minimal runtime checks such as ```instanceof``` and ```getNodeType()```
+
+![lox diagram]
+(/doc/lox.diagram.png)
+ 
 
  
 Example
@@ -149,9 +154,6 @@ Using the static initializer "trick" with a LOXBuilder can result in even more c
     System.out.print( document );
 }
 } ```
-
-![lox diagram]
-(/doc/lox.diagram.png)
 
 
 
