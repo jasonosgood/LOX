@@ -6,29 +6,29 @@ Alternative to W3C DOM, JDOM, dom4j, XOM, XPath, and XQuery.
 
 Notable differences, especially compared to W3C DOM:
 
- * More correct
+ * Better design
    * Java first vs port of JavaScript design
-   * Interface Content vs interface Node
+   * Just one DOM interface (Content), the rest are concrete classes
    * Document, DocType, Attribute do not implement Content
+   * No more ```instanceof``` and ```getNodeType()``` checks
  
  * Navigation
-   * Iterable Elements, eg ```for( Element child : parent ) {...}```
-   * Children do not have parent references
+   * Simple iteration like ```for( Element child : parent ) {...}```
+   * Children do not have parent references, reducing memory footprint
 
  * Querying
-   * UNIX style blobbing like ```/fruit/**/color[attr=red]``` vs XPath 
+   * UNIX style globbing like ```/fruit/**/color[attr=red]``` (vs XPath) 
    * Easier to debug
    * Baked-in vs separate tooling
-   * Aggregate results return List<Element> vs NodeList
+   * Aggregate results return List<Element> (vs NodeList, Nodes)
    * Convenient typed results like ```Element.findFirstInteger( ... )```
 
  * Practical
-   * toString() outputs formatted XML; great for debugging
-   * Treats namespaces as syntactic vinegar having no semantic value
-   * Ignores entities apart from escaping syntax, eg ```&amp;``` 
-   * Proper Builder for making DOMs
+   * ```toString()``` outputs formatted XML; great for debugging
+   * Namespaces treated as syntactic vinegar having no semantic value
+   * Entities ignored, apart from encoding syntax like ```&amp;``` 
+   * Builders for making DOMs, writing streams
    * Optional data type Formatters
-
 
  
 Example

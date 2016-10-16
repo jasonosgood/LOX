@@ -70,7 +70,7 @@ extends
 		_builder.close();
 	}
 
-	private String _namespacesFuckingSuck = "";
+	private String _namespace = "";
 	
 	public void startElement( String namespaceURI, String localName, String qName, Attributes attribs ) 
 		throws SAXException
@@ -89,12 +89,12 @@ extends
 				}
 			}
 			
-			if( !_namespacesFuckingSuck.equals( namespaceURI ))
+			if( !_namespace.equals( namespaceURI ))
 			{
 				if( namespaceURI != null )
 				{
 					_builder.attribute( "xmlns", namespaceURI );
-					_namespacesFuckingSuck = namespaceURI;
+					_namespace = namespaceURI;
 				}
 			}
 				
