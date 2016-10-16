@@ -1,29 +1,53 @@
-Use LOX to read, navigate, query, build, and write XML documents. Alternative to W3C DOM and XPath.
+Simple, practical library to read, write, build, navigate, 
+and query XML documents. Great for web scrapping. Also good 
+for building DOMs.
 
-![lox diagram]
-(/doc/lox.diagram.png)
+Alternative to W3C DOM, JDOM, dom4j, XOM, XPath, and XQuery.
 
-ugh
+Notable differences, especially compared to W3C DOM:
 
-(https://github.com/jasonosgood/LOX/blob/master/doc/lox.diagram.png)
+ * More correct
+   * Java first vs port of JavaScript design
+   * Interface Content vs interface Node
+   * Document, DocType, Attribute do not implement Content
+ 
+ * Navigation
+   * Iterable Elements, eg ```for( Element child : parent ) {...}```
+   * Children do not have parent references
 
-Unique features.
+ * Querying
+   * UNIX style blobbing like ```/fruit/**/color[attr=red]``` vs XPath 
+   * Easier to debug
+   * Baked-in vs separate tooling
+   * Aggregate results return List<Element> vs NodeList
+   * Convenient typed results like ```Element.findFirstInteger( ... )```
 
- - Uses JDK 1.5's generics and foreach.
-Builders for both object graphs and Writers.
-Optional data type Formatters.
-'toString()' method outputs XML formatted data. Great for debugging.
-Treats XML Namespaces as syntactic vinegar.
+ * Practical
+   * toString() outputs formatted XML; great for debugging
+   * Treats namespaces as syntactic vinegar having no semantic value
+   * Ignores entities apart from escaping syntax, eg ```&amp;``` 
+   * Proper Builder for making DOMs
+   * Optional data type Formatters
 
+
+ 
 Example
 
 The following four examples will recreate this document using four different strategies: manual construction, using the LOXBuilder, subclassing the LOXBuilder, and using a static initializer with LOXBuilder. Which strategy you choose is dependent on your esthetics and temperment.
-
-<?xml version="1.0" encoding="UTF-8"?> <parent> <child1 key="value"/> <child2 key="value"> <grandchild1 key="value">data</grandchild1> <grandchild2 key="value">data</grandchild2> </child2> </parent>
-
+```
+<?xml version="1.0" encoding="UTF-8"?> 
+<parent> <child1 key="value"/> 
+<child2 key="value"> 
+<grandchild1 key="value">data</grandchild1> 
+<grandchild2 key="value">data</grandchild2> 
+</child2> 
+</parent>
+```
 Example 1 - Manually
 
-Here's how to make the above document the "traditional" way. It's familiar, but not very much fun. Notice all the temporary local variables and how children are added to parents out of order. ``` public class ParentChildLOXExample1 { public static void main( String[] args ) { ParentChildLOXExample1 example = new ParentChildLOXExample1(); Document document = example.make(); System.out.print( document ); }
+Here's how to make the above document the "traditional" way. It's familiar, but not very much fun. Notice all the temporary local variables and how children are added to parents out of order. 
+``` 
+public class ParentChildLOXExample1 { public static void main( String[] args ) { ParentChildLOXExample1 example = new ParentChildLOXExample1(); Document document = example.make(); System.out.print( document ); }
 
 public Document make()
 {
@@ -126,6 +150,11 @@ Using the static initializer "trick" with a LOXBuilder can result in even more c
 }
 } ```
 
+![lox diagram]
+(/doc/lox.diagram.png)
+
+
+
 Status / TODO
 
 build script
@@ -134,5 +163,4 @@ documentation, flesh out JavaDocs (yuck)
 compile XML file to code (similar to XMLC, but better)
 convert examples to unit tests
 figure out the licensing stuff
-some kind of xpath support
 fake Namespace support
