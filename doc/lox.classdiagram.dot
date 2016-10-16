@@ -1,0 +1,70 @@
+digraph LOXClass {
+	splines = false
+
+	node [
+		shape = record
+		style = filled
+		fillcolor = gray95
+	]
+
+	edge [
+		arrowtail = empty
+		dir = back
+	]
+
+	Document [
+		label = "{Document| + doctype \l | + root : Element \l | + children : Content \l }"
+	]
+
+	DocType []
+
+	Content [ label = <<i>Content</i>> ]
+
+	CDATA []
+
+	Comment []
+
+	Element [
+		label = "{Element| + name \l | + attributes : Attribute \l | + children : Content \l }"
+	]
+
+
+	PI [ label = "Processing\nInstruction" ]
+
+	Text []
+
+	Whitespace []
+
+	Attribute []
+
+
+	Document -> DocType [
+		constraint = false
+		arrowtail = odiamond
+	]
+
+	Content -> { CDATA, Comment, Element, PI, Text, Whitespace }
+
+	Element -> Attribute [
+		constraint = true
+		arrowtail = odiamond
+	]
+
+	Element -> Content [
+		taillabel = "1"
+		headlabel = "0..*"
+		arrowtail = odiamond
+	]
+
+	Document -> Element [
+		taillabel = "1"
+		headlabel = "0..1"
+		arrowtail = odiamond
+	]
+
+	Document -> Content [
+		taillabel = "1"
+		headlabel = "0..*"
+		arrowtail = odiamond
+	]
+}
