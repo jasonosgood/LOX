@@ -46,3 +46,6 @@ no parent reference, no getParent() clone() copy() methods, reuse instances thro
 LazyArrayList (lazily initialized) 
 
 FIX: Element.toString has \n prefix 
+
+https://docs.oracle.com/javase/7/docs/api/java/nio/file/PathMatcher.html
+https://docs.oracle.com/javase/7/docs/api/java/nio/file/FileSystem.html#getPathMatcher(java.lang.String)
