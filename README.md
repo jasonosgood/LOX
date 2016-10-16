@@ -1,12 +1,7 @@
-LOX  - Lightweight Objects for XML
+Use LOX to read, navigate, query, build, and write XML documents. Alternative to W3C DOM and XPath.
 
-===
-
-
-Use LOX to both query and generate XML documents.
 
 Unique features.
-
 
  - Uses JDK 1.5's generics and foreach.
 Builders for both object graphs and Writers.
