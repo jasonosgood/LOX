@@ -1,5 +1,7 @@
 Use LOX to read, navigate, query, build, and write XML documents. Alternative to W3C DOM and XPath.
 
+![lox diagram]
+(https://github.com/jasonosgood/LOX/blob/master/doc/lox.diagram.png)
 
 Unique features.
 
