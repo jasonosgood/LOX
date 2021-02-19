@@ -42,7 +42,9 @@ extends
 		{
 			throw new NullPointerException( "rootable" );
 		}
-		
+
+		// TODO: Don't allow more than one Element (aka root) to be added
+
 		return super.add( root );
 	}
 	

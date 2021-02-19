@@ -338,6 +338,8 @@ implements
 			
 			find( first, this, query, 0, false, result );
 		}
+
+		// FIXME: This can't be right, right? Query is recursive descent...
 		// TODO: Maybe Replace _nth & comparator with iterative path expression
 		// evaluator which returns elements in document order
 		Collections.sort( result );

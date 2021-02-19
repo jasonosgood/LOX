@@ -4,21 +4,21 @@ for building documents.
 
 Alternative to W3C DOM, JDOM, dom4j, XOM, XPath, and XQuery.
 
-Ignores or mitigates parts of the XML spec that aren't or shouldn't 
-be used, such as namespaces and DTD defined entities.
+Ignores or mitigates the bad or unused parts of the XML spec, such 
+as namespaces and DTD defined entities.
 
 Notable differences, especially compared to W3C DOM:
 
- * Better design
+ * Simple design
    * Java first vs port of JavaScript design
    * Just one DOM interface (Content), the rest are concrete classes
    * Document, DocType, Attribute do not implement Content
    * No parent references
-   * Generally harder to make a malformed documents
+   * Harder to make malformed documents
 
  * Querying
-   * UNIX style globbing (vs XPath), such as find all spans inside list items ```**/li/**/span```  
-   * Aggregate results return List<Element> (vs NodeList, Nodes)
+   * UNIX style globbing (vs XPath), such as ```**/li/**/span``` to find all spans inside list items   
+   * Aggregate results return ```List<Element>``` (vs NodeList, Nodes)
    * Convenient typed results like ```Element.findFirstInteger( ... )```
    * Easier to debug
    * Baked-in vs separate tooling
